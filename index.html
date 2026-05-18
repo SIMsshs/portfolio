@@ -645,9 +645,37 @@
   <footer>
     <div class="container">© 2026 심규성. All rights reserved.</div>
   </footer>
-  <script>
-    const ADMIN_PASSWORD = "1234"; // 실제 공개 사이트에서는 이 방식이 안전하지 않습니다.
-    const STORAGE_KEY = "portfolioEditableContent:v1";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPFlgHBbKsFnbgECUkG-CSJKVi9zPr2Ew",
+      authDomain: "portfolio-admin-6d448.firebaseapp.com",
+      projectId: "portfolio-admin-6d448",
+      storageBucket: "portfolio-admin-6d448.firebasestorage.app",
+      messagingSenderId: "994061648838",
+      appId: "1:994061648838:web:1f0cdcbd68049cf36ce8c7",
+      measurementId: "G-K8SVSB3E24"
+    };
+
+    const ADMIN_EMAIL = "sim10101945@gmail.com";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const contentRef = doc(db, "site", "content");
 
     let isAdmin = false;
     let isEditMode = false;
@@ -662,26 +690,24 @@
     function showNotice(message) {
       notice.textContent = message;
       notice.classList.add("show");
-      setTimeout(() => notice.classList.remove("show"), 1800);
+      setTimeout(() => notice.classList.remove("show"), 2200);
     }
 
-    function loadSavedContent() {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    function applyContent(content) {
       editableElements.forEach((element) => {
         const key = element.dataset.editable;
-        if (saved[key] !== undefined) {
-          element.innerHTML = saved[key];
+        if (content[key] !== undefined) {
+          element.innerHTML = content[key];
         }
       });
     }
 
-    function saveContent() {
+    function collectContent() {
       const content = {};
       editableElements.forEach((element) => {
         content[element.dataset.editable] = element.innerHTML;
       });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
-      showNotice("이 브라우저에 저장되었습니다.");
+      return content;
     }
 
     function setEditMode(value) {
@@ -698,30 +724,61 @@
       showNotice(isEditMode ? "텍스트를 클릭해서 바로 수정할 수 있습니다." : "수정 모드를 껐습니다.");
     }
 
-    loginBtn.addEventListener("click", () => {
-      if (isAdmin) {
-        isAdmin = false;
+    async function saveContentToFirestore() {
+      if (!isAdmin) return;
+      try {
+        await setDoc(contentRef, collectContent(), { merge: true });
+        showNotice("Firestore DB에 저장되었습니다.");
+      } catch (error) {
+        console.error(error);
+        showNotice("저장 실패: Firestore 규칙과 로그인 상태를 확인하세요.");
+      }
+    }
+
+    onSnapshot(contentRef, (snapshot) => {
+      if (!snapshot.exists()) return;
+      if (isEditMode) return;
+      applyContent(snapshot.data());
+    }, (error) => {
+      console.error(error);
+      showNotice("DB 읽기 실패: Firestore 규칙을 확인하세요.");
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      isAdmin = !!user && user.email === ADMIN_EMAIL;
+
+      editBtn.hidden = !isAdmin;
+      saveBtn.hidden = !isAdmin;
+      resetBtn.hidden = !isAdmin;
+      loginBtn.textContent = isAdmin ? "Logout" : "Admin";
+      loginBtn.classList.toggle("active", isAdmin);
+
+      if (!isAdmin) {
         setEditMode(false);
-        editBtn.hidden = true;
-        saveBtn.hidden = true;
-        resetBtn.hidden = true;
-        loginBtn.textContent = "Admin";
-        loginBtn.classList.remove("active");
+      }
+    });
+
+    loginBtn.addEventListener("click", async () => {
+      if (isAdmin) {
+        await signOut(auth);
         showNotice("관리자 모드가 종료되었습니다.");
         return;
       }
 
-      const password = prompt("관리자 비밀번호를 입력하세요.");
-      if (password === ADMIN_PASSWORD) {
-        isAdmin = true;
-        editBtn.hidden = false;
-        saveBtn.hidden = false;
-        resetBtn.hidden = false;
-        loginBtn.textContent = "Logout";
-        loginBtn.classList.add("active");
-        showNotice("관리자 모드가 활성화되었습니다.");
-      } else if (password !== null) {
-        showNotice("비밀번호가 틀렸습니다.");
+      const password = prompt(`${ADMIN_EMAIL} 계정의 비밀번호를 입력하세요.`);
+      if (!password) return;
+
+      try {
+        const credential = await signInWithEmailAndPassword(auth, ADMIN_EMAIL, password);
+        if (credential.user.email === ADMIN_EMAIL) {
+          showNotice("관리자 모드가 활성화되었습니다.");
+        } else {
+          await signOut(auth);
+          showNotice("관리자 이메일이 아닙니다.");
+        }
+      } catch (error) {
+        console.error(error);
+        showNotice("로그인 실패: 이메일/비밀번호 설정을 확인하세요.");
       }
     });
 
@@ -730,16 +787,12 @@
       setEditMode(!isEditMode);
     });
 
-    saveBtn.addEventListener("click", () => {
-      if (!isAdmin) return;
-      saveContent();
-    });
+    saveBtn.addEventListener("click", saveContentToFirestore);
 
-    resetBtn.addEventListener("click", () => {
+    resetBtn.addEventListener("click", async () => {
       if (!isAdmin) return;
-      if (confirm("이 브라우저에 저장된 수정 내용을 지울까요?")) {
-        localStorage.removeItem(STORAGE_KEY);
-        location.reload();
+      if (confirm("현재 화면의 내용을 Firestore DB에 다시 저장할까요?")) {
+        await saveContentToFirestore();
       }
     });
 
@@ -748,12 +801,10 @@
         if (!isEditMode) return;
         if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
           event.preventDefault();
-          saveContent();
+          saveContentToFirestore();
         }
       });
     });
-
-    loadSavedContent();
   </script>
 </body>
 </html>
