@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>심규성 | Portfolio</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111c33;
+      --card-2: #16213d;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --line: rgba(148, 163, 184, 0.25);
+      --accent: #38bdf8;
+      --accent-2: #a78bfa;
+      --white: #ffffff;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.2), transparent 34rem),
+        radial-gradient(circle at top right, rgba(167, 139, 250, 0.2), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.75);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav {
+      min-height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .logo {
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-size: 1.15rem;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .hero {
+      padding: 96px 0 72px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 5.2rem);
+      line-height: 1.05;
+      letter-spacing: -0.07em;
+      margin-bottom: 24px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      margin-bottom: 32px;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #06111f;
+      border: none;
+    }
+
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+    }
+
+    .profile-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border-radius: 32px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .avatar {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 26px;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(167, 139, 250, 0.22)),
+        var(--card-2);
+      border: 1px solid var(--line);
+      margin-bottom: 22px;
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 900;
+      letter-spacing: -0.08em;
+    }
+
+    .profile-card h2 {
+      font-size: 1.35rem;
+      margin-bottom: 8px;
+    }
+
+    .profile-card p {
+      color: var(--muted);
+      margin: 0;
+      font-size: 0.98rem;
+    }
+
+    section {
+      padding: 76px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      letter-spacing: -0.05em;
+    }
+
+    .section-head p {
+      max-width: 520px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card {
+      background: rgba(17, 28, 51, 0.8);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.55);
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .card p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.1);
+      color: #bae6fd;
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      font-size: 0.82rem;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 16px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 20px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .timeline-date {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .timeline-item h3 {
+      margin-bottom: 6px;
+    }
+
+    .timeline-item p {
+      color: var(--muted);
+    }
+
+    .contact-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      padding: 32px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(167, 139, 250, 0.16));
+      border: 1px solid var(--line);
+    }
+
+    .contact-box h2 {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      letter-spacing: -0.05em;
+      margin-bottom: 8px;
+    }
+
+    .contact-box p {
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 30px 0 44px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .grid.two,
+      .grid.three,
+      .contact-box {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 10px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 68px;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="container">
+      <a class="logo" href="#top">Sim<span>.</span>Portfolio</a>
+      <div class="nav-links">
+        <a href="#about">소개</a>
+        <a href="#projects">프로젝트</a>
+        <a href="#skills">기술</a>
+        <a href="#activities">활동</a>
+        <a href="#contact">연락처</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero container">
+      <div>
+        <div class="badge">Science · Programming · Research</div>
+        <h1>문제를 구조화하고<br><span class="gradient-text">실험과 코드로 검증합니다.</span></h1>
+        <p>
+          안녕하세요. 저는 과학, 수학, 프로그래밍을 연결해 실제 문제를 분석하고 해결하는 데 관심이 있는 학생입니다.
+          최적화 알고리즘, 데이터 분석, 물리 실험, 생물정보학 프로젝트를 중심으로 탐구하고 있습니다.
+        </p>
+        <div class="button-row">
+          <a class="btn primary" href="#projects">프로젝트 보기</a>
+          <a class="btn secondary" href="#contact">연락하기</a>
+        </div>
+      </div>
+
+      <aside class="profile-card">
+        <div class="avatar">SG</div>
+        <h2>심규성</h2>
+        <p>Student Researcher / Python Developer / Science Portfolio</p>
+      </aside>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <h2>소개</h2>
+          <p>탐구 주제를 수학적 모델, 실험 설계, 데이터 분석으로 연결하는 것을 좋아합니다.</p>
+        </div>
+        <div class="grid three">
+          <article class="card">
+            <h3>Research Mindset</h3>
+            <p>문제를 단순히 해결하는 것보다, 왜 그런 결과가 나왔는지 모델과 근거로 설명하는 데 집중합니다.</p>
+          </article>
+          <article class="card">
+            <h3>Data-Driven</h3>
+            <p>실험값, 오차, 회귀, 시각화를 활용해 주장과 결론의 신뢰도를 높입니다.</p>
+          </article>
+          <article class="card">
+            <h3>Build & Iterate</h3>
+            <p>아이디어를 코드나 보고서 형태로 빠르게 구현하고, 피드백을 반영해 개선합니다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-head">
+          <h2>프로젝트</h2>
+          <p>아래 내용은 예시입니다. 실제 프로젝트명, 기간, 결과로 바꾸면 됩니다.</p>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <h3>유전 알고리즘 기반 시간표 최적화</h3>
+            <p>
+              이동 거리 최소화, 과목 중복 방지, 어려운 과목 연속 배치 방지 등을 목적함수와 제약조건으로 구성한 최적화 프로젝트입니다.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Python</span>
+              <span class="tag">Genetic Algorithm</span>
+              <span class="tag">Optimization</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>솔방울 바이오차 흡착 실험</h3>
+            <p>
+              메틸렌블루, 메틸오렌지, 카페인의 흡착 효율을 UV-Vis와 Beer-Lambert 법칙으로 분석한 환경화학 탐구입니다.
+            </p>
+            <div class="tag-row">
+              <span class="tag">UV-Vis</span>
+              <span class="tag">Adsorption</span>
+              <span class="tag">Kinetics</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>물리 실험 오차 분석</h3>
+            <p>
+              광학지레, 에어트랙, 회전관성 실험에서 불확도 전파와 선형 회귀를 이용해 실험값의 신뢰도를 평가했습니다.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Physics</span>
+              <span class="tag">Error Propagation</span>
+              <span class="tag">Regression</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>급식 추천 시스템</h3>
+            <p>
+              평점, 영양 정보, 최신성 가중치를 결합해 급식 메뉴를 추천하고 피드백 기반 가중치 조정을 설계했습니다.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Pandas</span>
+              <span class="tag">Recommendation</span>
+              <span class="tag">Data Analysis</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <div class="section-head">
+          <h2>기술 스택</h2>
+          <p>프로젝트와 탐구 활동에서 사용한 도구와 역량입니다.</p>
+        </div>
+        <div class="grid three">
+          <article class="card">
+            <h3>Programming</h3>
+            <div class="tag-row">
+              <span class="tag">Python</span>
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">JavaScript</span>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Data & Math</h3>
+            <div class="tag-row">
+              <span class="tag">NumPy</span>
+              <span class="tag">Pandas</span>
+              <span class="tag">Regression</span>
+              <span class="tag">Optimization</span>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Research Tools</h3>
+            <div class="tag-row">
+              <span class="tag">Excel</span>
+              <span class="tag">UV-Vis</span>
+              <span class="tag">Logger Pro</span>
+              <span class="tag">GeoGebra</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="activities">
+      <div class="container">
+        <div class="section-head">
+          <h2>활동 및 기록</h2>
+          <p>수상, 동아리, 연구 발표, 보고서 작성 경험 등을 넣는 영역입니다.</p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-date">2026</div>
+            <div>
+              <h3>과제연구 프로젝트</h3>
+              <p>실험 설계, 데이터 수집, 모델 피팅, 보고서 작성까지 연구 흐름 전체를 수행했습니다.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2025</div>
+            <div>
+              <h3>알고리즘 탐구</h3>
+              <p>NSGA-II, 유전 알고리즘, 다목적 최적화 문제를 공부하고 실제 문제에 적용했습니다.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2024</div>
+            <div>
+              <h3>과학 실험 및 데이터 분석</h3>
+              <p>물리·화학 실험에서 정량 분석과 오차 평가를 중심으로 보고서를 작성했습니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="contact-box">
+          <div>
+            <h2>같이 이야기해볼까요?</h2>
+            <p>프로젝트 제안, 연구 협업, 피드백 요청은 아래 연락처로 보내주세요.</p>
+          </div>
+          <a class="btn primary" href="mailto:sim10101945@gmail.com">sim10101945@gmail.com</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© 2026 심규성. All rights reserved.</div>
+  </footer>
+</body>
+</html>
