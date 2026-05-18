@@ -366,12 +366,78 @@
         gap: 8px;
       }
     }
+  
+
+    .admin-panel {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 50;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .admin-btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .admin-btn:hover {
+      border-color: rgba(56, 189, 248, 0.65);
+    }
+
+    .admin-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #06111f;
+      border: none;
+    }
+
+    .editable-on [data-editable] {
+      cursor: text;
+      outline: 1px dashed rgba(56, 189, 248, 0.55);
+      outline-offset: 4px;
+      border-radius: 6px;
+    }
+
+    .editable-on [data-editable]:focus {
+      outline: 2px solid var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    .admin-notice {
+      position: fixed;
+      left: 50%;
+      bottom: 84px;
+      transform: translateX(-50%);
+      z-index: 60;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.92);
+      color: var(--text);
+      font-size: 0.92rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .admin-notice.show {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
   <header>
     <nav class="container">
-      <a class="logo" href="#top">Sim<span>.</span>Portfolio</a>
+      <a class="logo" href="#top" data-editable="site-logo">Sim<span>.</span>Portfolio</a>
       <div class="nav-links">
         <a href="#about">소개</a>
         <a href="#projects">프로젝트</a>
@@ -385,11 +451,11 @@
   <main id="top">
     <section class="hero container">
       <div>
-        <div class="badge">Science · Programming · Research</div>
-        <h1>문제를 구조화하고<br><span class="gradient-text">실험과 코드로 검증합니다.</span></h1>
+        <div class="badge" data-editable="hero-badge">Science · Programming · Research</div>
+        <h1><span data-editable="hero-title-1">문제를 구조화하고</span><br><span class="gradient-text" data-editable="hero-title-2">실험과 코드로 검증합니다.</span></h1>
         <p>
-          안녕하세요. 저는 과학, 수학, 프로그래밍을 연결해 실제 문제를 분석하고 해결하는 데 관심이 있는 학생입니다.
-          최적화 알고리즘, 데이터 분석, 물리 실험, 생물정보학 프로젝트를 중심으로 탐구하고 있습니다.
+          <span data-editable="hero-description">안녕하세요. 저는 과학, 수학, 프로그래밍을 연결해 실제 문제를 분석하고 해결하는 데 관심이 있는 학생입니다.
+          최적화 알고리즘, 데이터 분석, 물리 실험, 생물정보학 프로젝트를 중심으로 탐구하고 있습니다.</span>
         </p>
         <div class="button-row">
           <a class="btn primary" href="#projects">프로젝트 보기</a>
@@ -399,8 +465,8 @@
 
       <aside class="profile-card">
         <div class="avatar">SG</div>
-        <h2>심규성</h2>
-        <p>Student Researcher / Python Developer / Science Portfolio</p>
+        <h2 data-editable="profile-name">심규성</h2>
+        <p data-editable="profile-subtitle">Student Researcher / Python Developer / Science Portfolio</p>
       </aside>
     </section>
 
@@ -435,9 +501,9 @@
         </div>
         <div class="grid two">
           <article class="card">
-            <h3>유전 알고리즘 기반 시간표 최적화</h3>
+            <h3 data-editable="project-1-title">유전 알고리즘 기반 시간표 최적화</h3>
             <p>
-              이동 거리 최소화, 과목 중복 방지, 어려운 과목 연속 배치 방지 등을 목적함수와 제약조건으로 구성한 최적화 프로젝트입니다.
+              <span data-editable="project-1-desc">이동 거리 최소화, 과목 중복 방지, 어려운 과목 연속 배치 방지 등을 목적함수와 제약조건으로 구성한 최적화 프로젝트입니다.</span>
             </p>
             <div class="tag-row">
               <span class="tag">Python</span>
@@ -447,9 +513,9 @@
           </article>
 
           <article class="card">
-            <h3>솔방울 바이오차 흡착 실험</h3>
+            <h3 data-editable="project-2-title">솔방울 바이오차 흡착 실험</h3>
             <p>
-              메틸렌블루, 메틸오렌지, 카페인의 흡착 효율을 UV-Vis와 Beer-Lambert 법칙으로 분석한 환경화학 탐구입니다.
+              <span data-editable="project-2-desc">메틸렌블루, 메틸오렌지, 카페인의 흡착 효율을 UV-Vis와 Beer-Lambert 법칙으로 분석한 환경화학 탐구입니다.</span>
             </p>
             <div class="tag-row">
               <span class="tag">UV-Vis</span>
@@ -459,9 +525,9 @@
           </article>
 
           <article class="card">
-            <h3>물리 실험 오차 분석</h3>
+            <h3 data-editable="project-3-title">물리 실험 오차 분석</h3>
             <p>
-              광학지레, 에어트랙, 회전관성 실험에서 불확도 전파와 선형 회귀를 이용해 실험값의 신뢰도를 평가했습니다.
+              <span data-editable="project-3-desc">광학지레, 에어트랙, 회전관성 실험에서 불확도 전파와 선형 회귀를 이용해 실험값의 신뢰도를 평가했습니다.</span>
             </p>
             <div class="tag-row">
               <span class="tag">Physics</span>
@@ -471,9 +537,9 @@
           </article>
 
           <article class="card">
-            <h3>급식 추천 시스템</h3>
+            <h3 data-editable="project-4-title">급식 추천 시스템</h3>
             <p>
-              평점, 영양 정보, 최신성 가중치를 결합해 급식 메뉴를 추천하고 피드백 기반 가중치 조정을 설계했습니다.
+              <span data-editable="project-4-desc">평점, 영양 정보, 최신성 가중치를 결합해 급식 메뉴를 추천하고 피드백 기반 가중치 조정을 설계했습니다.</span>
             </p>
             <div class="tag-row">
               <span class="tag">Pandas</span>
@@ -568,8 +634,126 @@
     </section>
   </main>
 
+  <div class="admin-panel">
+    <button class="admin-btn" id="loginBtn" type="button">Admin</button>
+    <button class="admin-btn" id="editBtn" type="button" hidden>수정 모드</button>
+    <button class="admin-btn" id="saveBtn" type="button" hidden>저장</button>
+    <button class="admin-btn" id="resetBtn" type="button" hidden>초기화</button>
+  </div>
+  <div class="admin-notice" id="adminNotice">저장되었습니다.</div>
+
   <footer>
     <div class="container">© 2026 심규성. All rights reserved.</div>
   </footer>
+  <script>
+    const ADMIN_PASSWORD = "1234"; // 실제 공개 사이트에서는 이 방식이 안전하지 않습니다.
+    const STORAGE_KEY = "portfolioEditableContent:v1";
+
+    let isAdmin = false;
+    let isEditMode = false;
+
+    const loginBtn = document.getElementById("loginBtn");
+    const editBtn = document.getElementById("editBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const notice = document.getElementById("adminNotice");
+    const editableElements = [...document.querySelectorAll("[data-editable]")];
+
+    function showNotice(message) {
+      notice.textContent = message;
+      notice.classList.add("show");
+      setTimeout(() => notice.classList.remove("show"), 1800);
+    }
+
+    function loadSavedContent() {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      editableElements.forEach((element) => {
+        const key = element.dataset.editable;
+        if (saved[key] !== undefined) {
+          element.innerHTML = saved[key];
+        }
+      });
+    }
+
+    function saveContent() {
+      const content = {};
+      editableElements.forEach((element) => {
+        content[element.dataset.editable] = element.innerHTML;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+      showNotice("이 브라우저에 저장되었습니다.");
+    }
+
+    function setEditMode(value) {
+      isEditMode = value;
+      document.body.classList.toggle("editable-on", isEditMode);
+      editBtn.classList.toggle("active", isEditMode);
+      editBtn.textContent = isEditMode ? "수정 중" : "수정 모드";
+
+      editableElements.forEach((element) => {
+        element.contentEditable = isEditMode ? "true" : "false";
+        element.spellcheck = false;
+      });
+
+      showNotice(isEditMode ? "텍스트를 클릭해서 바로 수정할 수 있습니다." : "수정 모드를 껐습니다.");
+    }
+
+    loginBtn.addEventListener("click", () => {
+      if (isAdmin) {
+        isAdmin = false;
+        setEditMode(false);
+        editBtn.hidden = true;
+        saveBtn.hidden = true;
+        resetBtn.hidden = true;
+        loginBtn.textContent = "Admin";
+        loginBtn.classList.remove("active");
+        showNotice("관리자 모드가 종료되었습니다.");
+        return;
+      }
+
+      const password = prompt("관리자 비밀번호를 입력하세요.");
+      if (password === ADMIN_PASSWORD) {
+        isAdmin = true;
+        editBtn.hidden = false;
+        saveBtn.hidden = false;
+        resetBtn.hidden = false;
+        loginBtn.textContent = "Logout";
+        loginBtn.classList.add("active");
+        showNotice("관리자 모드가 활성화되었습니다.");
+      } else if (password !== null) {
+        showNotice("비밀번호가 틀렸습니다.");
+      }
+    });
+
+    editBtn.addEventListener("click", () => {
+      if (!isAdmin) return;
+      setEditMode(!isEditMode);
+    });
+
+    saveBtn.addEventListener("click", () => {
+      if (!isAdmin) return;
+      saveContent();
+    });
+
+    resetBtn.addEventListener("click", () => {
+      if (!isAdmin) return;
+      if (confirm("이 브라우저에 저장된 수정 내용을 지울까요?")) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    });
+
+    editableElements.forEach((element) => {
+      element.addEventListener("keydown", (event) => {
+        if (!isEditMode) return;
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
+          event.preventDefault();
+          saveContent();
+        }
+      });
+    });
+
+    loadSavedContent();
+  </script>
 </body>
 </html>
